@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class AccountService {
 
-    private static final String API_BASE_URL = "http://localhost:8080/account/;";
+    private static final String API_BASE_URL = "http://localhost:8080/";
     private final RestTemplate restTemplate = new RestTemplate();
 
     private String authToken = null;
@@ -18,11 +18,12 @@ public class AccountService {
         this.authToken = authToken;
     }
 
-    public Account getAccountByUserId(int UserId){
-        Account account = null;
+
+    public Account getAccountByAccountId(int accountId){
+        Account account = new Account();
         try {
             ResponseEntity<Account> response =
-                    restTemplate.exchange(API_BASE_URL + UserId, HttpMethod.GET, makeAuthEntity(), Account.class);
+                    restTemplate.exchange(API_BASE_URL + "account/" + accountId, HttpMethod.GET, makeAuthEntity(), Account.class);
             account = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -31,8 +32,8 @@ public class AccountService {
         return account;
     }
 
-    public double getBalance(int userId) {
-        Account account = getAccountByUserId(userId);
+    public double getBalance(int accountId) {
+        Account account = getAccountByAccountId(accountId);
         return account.getBalance();
 
     }
