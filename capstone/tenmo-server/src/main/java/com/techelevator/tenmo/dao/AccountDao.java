@@ -7,5 +7,7 @@ public interface AccountDao {
     public double getBalance(int userId);
     public Account getAccountById(int accountId);
     
+    public Account getAccountByUserId(int userId);
+    
     
 }

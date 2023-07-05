@@ -31,6 +31,18 @@ public class AccountController {
 
     }
 
+    @PreAuthorize("permitAll()")
+    @RequestMapping(path = "/account/user/{userId}", method = RequestMethod.GET)
+    public Account getAccountByUserId(@PathVariable int userId) {
+        Account account = accountDao.getAccountByUserId(userId);
+        if (account == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+        } else {
+            return account;
+        }
+
+    }
+
 
 
 }

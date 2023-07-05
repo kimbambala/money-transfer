@@ -38,6 +38,10 @@ public class AccountService {
 
     }
 
+    public int getAccountByUserId(int userId){
+        
+    }
+
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);

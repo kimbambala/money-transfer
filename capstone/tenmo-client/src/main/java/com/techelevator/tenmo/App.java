@@ -93,6 +93,7 @@ public class App {
 
 	private void viewCurrentBalance() {
 
+        int accountId = accountService.
 
         System.out.println("Your current account balance is " + accountService.getBalance(2001));
 

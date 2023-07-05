@@ -18,3 +18,5 @@
 2023-07-05T14:02:30.1747614 404 : [{"timestamp":"2023-07-05T20:02:30.147+00:00","status":404,"error":"Not Found","message":"Account not found","path":"/account/1003"}]
 2023-07-05T14:04:10.7242503 404 : [{"timestamp":"2023-07-05T20:04:10.685+00:00","status":404,"error":"Not Found","message":"Account not found","path":"/account/1003"}]
 2023-07-05T14:05:10.9074454 404 : [{"timestamp":"2023-07-05T20:05:10.878+00:00","status":404,"error":"Not Found","message":"Account not found","path":"/account/1003"}]
+2023-07-05T13:15:00.8386264 401 : [no body]
+2023-07-05T13:15:24.3061472 401 : [no body]
