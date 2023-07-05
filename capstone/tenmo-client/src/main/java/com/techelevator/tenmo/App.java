@@ -94,9 +94,9 @@ public class App {
 	private void viewCurrentBalance() {
 
         int userId = currentUser.getUser().getId();
-        int accountId = accountService.getAccountByUserId(userId).getAccountId();
+        Account currentAccount = accountService.getAccountByUserId(userId);
 
-        System.out.println("Your current account balance is " + accountService.getBalance(accountId));
+        System.out.println("Your current account balance is " + currentAccount.getBalance());
 
 
 	}
