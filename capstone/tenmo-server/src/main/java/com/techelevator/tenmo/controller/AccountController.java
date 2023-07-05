@@ -19,10 +19,10 @@ public class AccountController {
     public AccountController(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
-
-    @RequestMapping(path = "/account/{userId}", method = RequestMethod.GET)
-    public Account getAccountByUserId(@PathVariable int userId) {
-        Account account = accountDao.getAccountByUserId(userId);
+    @PreAuthorize("permitAll()")
+    @RequestMapping(path = "/account/{accountId}", method = RequestMethod.GET)
+    public Account getAccountById(@PathVariable int accountId) {
+        Account account = accountDao.getAccountById(accountId);
         if (account == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
         } else {

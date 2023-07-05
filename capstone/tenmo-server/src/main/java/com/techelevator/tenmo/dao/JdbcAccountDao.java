@@ -6,7 +6,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class JdbcAccountDao implements AccountDao{
 
     private final JdbcTemplate jdbcTemplate;
@@ -24,7 +26,9 @@ public class JdbcAccountDao implements AccountDao{
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-            balance = mapRowToAccount(results).getBalance();
+            if (results.next()) {
+                balance = mapRowToAccount(results).getBalance();
+            }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server / database");
         }
@@ -32,14 +36,16 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account getAccountByUserId(int userId){
+    public Account getAccountById(int accountId){
         Account account = null;
 
-        String sql = "SELECT account_id, user_id, balance FROM account WHERE user_id = ?";
+        String sql = "SELECT account_id, user_id, balance FROM account WHERE account_id = ?";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-            account = mapRowToAccount(results);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+            if (results.next()) {
+                account = mapRowToAccount(results);
+            }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server / database");
         }
