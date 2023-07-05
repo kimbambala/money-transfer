@@ -20,3 +20,7 @@
 2023-07-05T14:05:10.9074454 404 : [{"timestamp":"2023-07-05T20:05:10.878+00:00","status":404,"error":"Not Found","message":"Account not found","path":"/account/1003"}]
 2023-07-05T13:15:00.8386264 401 : [no body]
 2023-07-05T13:15:24.3061472 401 : [no body]
+2023-07-05T14:00:18.0474088 500 : [{"timestamp":"2023-07-05T21:00:18.025+00:00","status":500,"error":"Internal Server Error","message":"The request was rejected because the URL contained a potentially malicious String \";\"","path":"/;account/1001"}]
+2023-07-05T14:01:12.3692993 500 : [{"timestamp":"2023-07-05T21:01:12.359+00:00","status":500,"error":"Internal Server Error","message":"The request was rejected because the URL contained a potentially malicious String \";\"","path":"/;account/user/1001"}]
+2023-07-05T14:03:30.5453944 500 : [{"timestamp":"2023-07-05T21:03:30.534+00:00","status":500,"error":"Internal Server Error","message":"The request was rejected because the URL contained a potentially malicious String \";\"","path":"/;account/user/1001"}]
+2023-07-05T14:03:30.5599581 500 : [{"timestamp":"2023-07-05T21:03:30.557+00:00","status":500,"error":"Internal Server Error","message":"The request was rejected because the URL contained a potentially malicious String \";\"","path":"/;account/0"}]
