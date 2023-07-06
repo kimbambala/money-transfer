@@ -10,6 +10,7 @@ public interface AccountDao {
     public Account getAccountById(int accountId);
     public Account withdrawFromAccount( int accountId, BigDecimal amount);
     public Account getAccountByUserId(int userId);
-    
-    
+
+
+    void depositToAccount(int accountId, BigDecimal amount);
 }

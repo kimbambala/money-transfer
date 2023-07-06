@@ -71,6 +71,11 @@ public class JdbcAccountDao implements AccountDao{
         return  account;
     }
 
+    @Override
+    public void depositToAccount(int accountId, BigDecimal amount) {
+
+    }
+
     public Account withdrawFromAccount( int accountId, BigDecimal amount) {
 
         Account account = getAccountById(accountId);

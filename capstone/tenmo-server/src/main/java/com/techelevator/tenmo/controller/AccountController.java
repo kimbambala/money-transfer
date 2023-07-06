@@ -1,7 +1,10 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.AccountDao;
+import com.techelevator.tenmo.exception.DaoException;
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.TransactionRequest;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +33,22 @@ public class AccountController {
 
     }
 
-    @RequestMapping(path = "/{accountId}/withdraw/{amount}", method = RequestMethod.PUT)
-    public Account withdrawFromAccount(@PathVariable int accountId, @PathVariable BigDecimal amount) {
-        int currentUserAccountId = accountDao.getAccountById(accountId).getAccountId();
+    @RequestMapping(path = "/account/withdraw/{accountFrom}", method = RequestMethod.PUT)
+    public Account withdrawFromAccount(@RequestBody Transfer transfer, @PathVariable int accountFrom) {
+        account.setAccountId(accountId);
+        try {
+            Account updatedAccount = accountDao.withdrawFromAccount(accountFrom, transfer.getAmount());
+            transfer.
+            return updatedAccount;
+        } catch (DaoException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found.");
+        }
+        return updatedAccount;
+    }
 
-        Account account = accountDao.withdrawFromAccount(currentUserAccountId, amount );
-
-        return account;
-
+    @RequestMapping(path = "/account/deposit", method = RequestMethod.PUT)
+    public void depositToAccount(@RequestBody TransactionRequest request) {
+        accountDao.depositToAccount(request.getAccountId(), request.getAmount());
     }
 
 

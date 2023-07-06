@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.TransactionRequest;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
@@ -34,12 +35,6 @@ public class AccountService {
         return account;
     }
 
-    public BigDecimal getBalance(int accountId) {
-        Account account = getAccountByAccountId(accountId);
-        return account.getBalance();
-
-    }
-
     public Account getAccountByUserId(int userId){
         Account account = new Account();
         try {
@@ -53,8 +48,8 @@ public class AccountService {
         return account;
     }
 
-    public void withdraw(int accountId, BigDecimal amount) {
-        restTemplate.put(API_BASE_URL + "accounts/" + accountId + "withdraw/" + amount, null);
+    public void withdraw(TransactionRequest transactionRequest) {
+        restTemplate.exchange(API_BASE_URL + "account/withdraw", HttpMethod.PUT, makeTransactionEntity(transactionRequest), Void.class);
     }
 
     private HttpEntity<Void> makeAuthEntity() {
@@ -68,5 +63,12 @@ public class AccountService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
         return new HttpEntity<>(account, headers);
+    }
+
+    private HttpEntity<TransactionRequest> makeTransactionEntity(TransactionRequest transactionRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(transactionRequest, headers);
     }
 }
