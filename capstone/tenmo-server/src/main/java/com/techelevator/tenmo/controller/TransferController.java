@@ -13,8 +13,8 @@ public class TransferController {
 
     private final TransferDao transferDao;
 
-    public TransferController(TransferDao transferDAO) {
-        this.transferDao = transferDAO;
+    public TransferController(TransferDao transferDao) {
+        this.transferDao = transferDao;
     }
 
     @GetMapping
