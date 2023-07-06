@@ -7,6 +7,8 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 public class AccountService {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
@@ -32,7 +34,7 @@ public class AccountService {
         return account;
     }
 
-    public double getBalance(int accountId) {
+    public BigDecimal getBalance(int accountId) {
         Account account = getAccountByAccountId(accountId);
         return account.getBalance();
 

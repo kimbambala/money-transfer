@@ -8,10 +8,7 @@ import java.util.List;
 public interface UserDao {
 
     List<User> getUsers();
-
-    User getUserById(int id);
-
     User getUserByUsername(String username);
-
+    User getUserById(int id);
     User createUser(RegisterUserDto user);
 }

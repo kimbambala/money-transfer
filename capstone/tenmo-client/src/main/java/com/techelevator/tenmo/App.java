@@ -16,7 +16,7 @@ public class App {
     private final ConsoleService consoleService = new ConsoleService();
     private final AccountService accountService = new AccountService();
     private final TransferService transferService = new TransferService(API_BASE_URL);
-    private final UserService userService = new UserService(API_BASE_URL);
+    private final UserService userService = new UserService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
@@ -63,6 +63,7 @@ public class App {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
         accountService.setAuthToken(currentUser.getToken());
+        userService.setAuthToken(currentUser.getToken());
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }
@@ -96,12 +97,18 @@ public class App {
 
         int userId = currentUser.getUser().getId();
         Account currentAccount = accountService.getAccountByUserId(userId);
-        double balance = currentAccount.getBalance();
+        BigDecimal balance = currentAccount.getBalance();
 
         System.out.println("Your current account balance is $" + balance);
 
 
 	}
+
+    private BigDecimal getBalance(int userId){
+        Account currentAccount = accountService.getAccountByUserId(userId);
+        BigDecimal balance = currentAccount.getBalance();
+        return balance;
+    }
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
@@ -115,7 +122,15 @@ public class App {
 
 	private void sendBucks() {
         displayUsers();
-
+        int userId = currentUser.getUser().getId();
+        int receiverId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");
+        BigDecimal amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
+        Account sendingAccount = accountService.getAccountByUserId(userId);
+        Account receivingAccount = accountService.getAccountByUserId(receiverId);
+        sendingAccount.setBalance(sendingAccount.getBalance().subtract(amountToSend)); //subtract send amount from sending account
+        receivingAccount.setBalance(receivingAccount.getBalance().add(amountToSend));
+        System.out.println("Sender balance:" + sendingAccount.getBalance());
+        System.out.println("Receiver balance:" + receivingAccount.getBalance());
 
     }
 

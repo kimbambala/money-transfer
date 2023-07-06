@@ -14,15 +14,15 @@ public class UserService {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
     private final RestTemplate restTemplate = new RestTemplate();
-    private String AUTH_TOKEN;
+    private String authToken = null;
 
-    public UserService(String authToken) {
-        this.AUTH_TOKEN = authToken;
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public List<User> getUsers() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(AUTH_TOKEN);
+        headers.setBearerAuth(authToken);
         HttpEntity entity = new HttpEntity<>(headers);
 
         ResponseEntity<User[]> responseEntity = restTemplate.exchange(API_BASE_URL + "users", HttpMethod.GET, entity, User[].class);
@@ -32,7 +32,7 @@ public class UserService {
 
     public String getUsernameById(int id) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(AUTH_TOKEN);
+        headers.setBearerAuth(authToken);
         HttpEntity entity = new HttpEntity<>(headers);
 
         ResponseEntity<User> responseEntity = restTemplate.exchange(API_BASE_URL + "users/" + id, HttpMethod.GET, entity, User.class);
