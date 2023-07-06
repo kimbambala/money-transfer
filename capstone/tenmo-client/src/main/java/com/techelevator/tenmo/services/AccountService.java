@@ -48,8 +48,13 @@ public class AccountService {
         return account;
     }
 
-    public void withdraw(TransactionRequest transactionRequest) {
-        restTemplate.exchange(API_BASE_URL + "account/withdraw", HttpMethod.PUT, makeTransactionEntity(transactionRequest), Void.class);
+    public void withdraw(int accountId, BigDecimal amount) {
+        restTemplate.exchange(API_BASE_URL + "account/" + accountId + "/withdraw/" + amount, HttpMethod.PUT, makeAuthEntity(), Void.class);
+
+    }
+    public void deposit(int accountId, BigDecimal amount) {
+        restTemplate.exchange(API_BASE_URL + "account/" + accountId + "/deposit/" + amount, HttpMethod.PUT, makeAuthEntity(), Void.class);
+
     }
 
     private HttpEntity<Void> makeAuthEntity() {

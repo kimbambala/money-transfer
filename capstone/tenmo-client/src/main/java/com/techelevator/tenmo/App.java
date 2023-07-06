@@ -123,22 +123,43 @@ public class App {
 	private void sendBucks() {
         displayUsers();
         int userId = currentUser.getUser().getId();
-        int receiverId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");
-        BigDecimal amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
+        int receiverId = userId;
+        while (receiverId == userId) {
+            receiverId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");
+            if (receiverId == userId) {
+                System.out.println("You cannot send money to yourself!");
+            }
+        }
         Account sendingAccount = accountService.getAccountByUserId(userId);
         Account receivingAccount = accountService.getAccountByUserId(receiverId);
-        sendingAccount.setBalance(sendingAccount.getBalance().subtract(amountToSend)); //subtract send amount from sending account
-        receivingAccount.setBalance(receivingAccount.getBalance().add(amountToSend));
-        System.out.println("Sender balance:" + sendingAccount.getBalance());
-        System.out.println("Receiver balance:" + receivingAccount.getBalance());
+        BigDecimal currentBalance = sendingAccount.getBalance();
+        BigDecimal amountToSend = null;
+
+        while (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
+            amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
+            if (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
+                System.out.println("Invalid ammount of money to send!");
+            }
+
+        }
+        if (currentBalance.compareTo(amountToSend) < 0) {
+            System.out.println("Insufficient Funds!");
+        } else {
+            sendingAccount.setBalance(sendingAccount.getBalance().subtract(amountToSend)); //subtract send amount from sending account
+            receivingAccount.setBalance(receivingAccount.getBalance().add(amountToSend));
+            System.out.println("Sender balance:" + sendingAccount.getBalance());
+            System.out.println("Receiver balance:" + receivingAccount.getBalance());
+        }
+
 
     }
 
 
 
 	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
+//		accountService.deposit(2002, new BigDecimal(55000));
+//        System.out.println("this is a test");
+
 	}
 
     private void displayUsers() {

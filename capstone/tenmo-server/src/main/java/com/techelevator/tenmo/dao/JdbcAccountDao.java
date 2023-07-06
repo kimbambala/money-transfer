@@ -72,8 +72,21 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public void depositToAccount(int accountId, BigDecimal amount) {
+    public Account depositToAccount(int accountId, BigDecimal amount) {
+        Account account = getAccountById(accountId);
+        BigDecimal balance = account.getBalance();
+        BigDecimal remainingBalance = balance.add(amount);
 
+        String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
+        try {
+
+            jdbcTemplate.update(sql, remainingBalance, accountId );
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server / database");
+        }
+
+        return account;
     }
 
     public Account withdrawFromAccount( int accountId, BigDecimal amount) {

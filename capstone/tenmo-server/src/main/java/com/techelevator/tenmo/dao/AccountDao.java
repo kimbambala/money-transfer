@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 public interface AccountDao {
 
-    public BigDecimal getBalance(int userId);
-    public Account getAccountById(int accountId);
-    public Account withdrawFromAccount( int accountId, BigDecimal amount);
-    public Account getAccountByUserId(int userId);
+    BigDecimal getBalance(int userId);
+    Account getAccountById(int accountId);
+    Account withdrawFromAccount( int accountId, BigDecimal amount);
+    Account getAccountByUserId(int userId);
 
 
-    void depositToAccount(int accountId, BigDecimal amount);
+    Account depositToAccount(int accountId, BigDecimal amount);
 }

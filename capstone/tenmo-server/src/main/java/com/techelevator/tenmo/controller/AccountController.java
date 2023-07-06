@@ -33,29 +33,33 @@ public class AccountController {
 
     }
 
-    @RequestMapping(path = "/account/withdraw/{accountFrom}", method = RequestMethod.PUT)
-    public Account withdrawFromAccount(@RequestBody Transfer transfer, @PathVariable int accountFrom) {
-        account.setAccountId(accountId);
-        try {
-            Account updatedAccount = accountDao.withdrawFromAccount(accountFrom, transfer.getAmount());
-            transfer.
-            return updatedAccount;
-        } catch (DaoException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found.");
-        }
-        return updatedAccount;
+   // @RequestMapping(path = "/account/withdraw/{accountFrom}", method = RequestMethod.PUT)
+//    public Account withdrawFromAccount(@RequestBody Transfer transfer, @PathVariable int accountFrom) {
+//        account.setAccountId(accountId);
+//        try {
+//            Account updatedAccount = accountDao.withdrawFromAccount(accountFrom, transfer.getAmount());
+//            transfer.
+//            return updatedAccount;
+//        } catch (DaoException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found.");
+//        }
+//        return updatedAccount;
 
-        /*public Account withdrawFromAccount(@PathVariable int accountId, @PathVariable BigDecimal amount) {
+        @RequestMapping(path = "/account/{accountId}/withdraw/{amount}", method = RequestMethod.PUT)
+        public Account withdrawFromAccount(@PathVariable int accountId, @PathVariable BigDecimal amount) {
             int currentUserAccountId = accountDao.getAccountById(accountId).getAccountId();
 
             Account account = accountDao.withdrawFromAccount(currentUserAccountId, amount );
 
-            return account;*/
+            return account;
     }
 
-    @RequestMapping(path = "/account/deposit", method = RequestMethod.PUT)
-    public void depositToAccount(@RequestBody TransactionRequest request) {
-        accountDao.depositToAccount(request.getAccountId(), request.getAmount());
+    @RequestMapping(path = "/account/{accountId}/deposit/{amount}", method = RequestMethod.PUT)
+    public Account depositToAccount(@PathVariable int accountId, @PathVariable BigDecimal amount) {
+        int currentUserAccountId = accountDao.getAccountById(accountId).getAccountId();
+        Account account = accountDao.depositToAccount(currentUserAccountId, amount);
+
+        return account;
     }
 
 
