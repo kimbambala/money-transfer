@@ -4,11 +4,10 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.model.Account;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.math.BigDecimal;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -28,6 +27,16 @@ public class AccountController {
         } else {
             return account;
         }
+
+    }
+
+    @RequestMapping(path = "/{accountId}/withdraw/{amount}", method = RequestMethod.PUT)
+    public Account withdrawFromAccount(@PathVariable int accountId, @PathVariable BigDecimal amount) {
+        int currentUserAccountId = accountDao.getAccountById(accountId).getAccountId();
+
+        Account account = accountDao.withdrawFromAccount(currentUserAccountId, amount );
+
+        return account;
 
     }
 

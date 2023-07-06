@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+
 @Repository
 public class JdbcAccountDao implements AccountDao{
 
@@ -19,8 +21,8 @@ public class JdbcAccountDao implements AccountDao{
 
 
     @Override
-    public double getBalance(int userId) {
-        double balance = 0;
+    public BigDecimal getBalance(int userId) {
+        BigDecimal balance = null;
 
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
 
@@ -69,11 +71,29 @@ public class JdbcAccountDao implements AccountDao{
         return  account;
     }
 
+    public Account withdrawFromAccount( int accountId, BigDecimal amount) {
+
+        Account account = getAccountById(accountId);
+        BigDecimal balance = account.getBalance();
+        BigDecimal remainingBalance = balance.subtract(amount);
+
+        String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
+        try {
+
+          jdbcTemplate.update(sql, remainingBalance, accountId );
+
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server / database");
+        }
+
+        return account;
+    }
+
     private Account mapRowToAccount(SqlRowSet rowSet) {
         Account account = new Account();
         account.setAccountId(rowSet.getInt("account_id"));
         account.setUserId(rowSet.getInt("user_id"));
-        account.setBalance(rowSet.getDouble("balance"));
+        account.setBalance(rowSet.getBigDecimal("balance"));
         return account;
     }
 }

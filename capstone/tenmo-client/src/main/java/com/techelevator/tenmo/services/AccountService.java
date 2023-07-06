@@ -53,6 +53,10 @@ public class AccountService {
         return account;
     }
 
+    public void withdraw(int accountId, BigDecimal amount) {
+        restTemplate.put(API_BASE_URL + "accounts/" + accountId + "withdraw/" + amount, null);
+    }
+
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
