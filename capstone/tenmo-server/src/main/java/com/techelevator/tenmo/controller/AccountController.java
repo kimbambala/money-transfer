@@ -44,6 +44,13 @@ public class AccountController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found.");
         }
         return updatedAccount;
+
+        /*public Account withdrawFromAccount(@PathVariable int accountId, @PathVariable BigDecimal amount) {
+            int currentUserAccountId = accountDao.getAccountById(accountId).getAccountId();
+
+            Account account = accountDao.withdrawFromAccount(currentUserAccountId, amount );
+
+            return account;*/
     }
 
     @RequestMapping(path = "/account/deposit", method = RequestMethod.PUT)
