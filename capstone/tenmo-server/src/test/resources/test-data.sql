@@ -75,14 +75,14 @@ INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user1','user1','RO
 INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user2','user2','ROLE_USER'); -- 1002
 INSERT INTO tenmo_user (username,password_hash,role) VALUES ('user3','user3','ROLE_USER');
 
-INSERT INTO account (account_id, user_id, balance) VALUES (2050, 1001, 10000);
-INSERT INTO account (account_id, user_id, balance) VALUES (2051, 1002, 10000);
-INSERT INTO account (account_id, user_id, balance) VALUES (2052, 1003, 10000);
+INSERT INTO account (account_id, user_id, balance) VALUES (2050, 1001, 10000.00);
+INSERT INTO account (account_id, user_id, balance) VALUES (2051, 1002, 10000.00);
+INSERT INTO account (account_id, user_id, balance) VALUES (2052, 1003, 10000.00);
 
-INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3001, 2, 2, 2050, 2051, 75);
-INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3002, 1, 2, 2051, 2050, 80);
-INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3003, 2, 1, 2051, 2050, 600);
-INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3004, 2, 3, 2050, 2051, 250);
+INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3001, 2, 2, 2050, 2051, 75.00);
+INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3002, 1, 2, 2051, 2050, 80.00);
+INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3003, 2, 1, 2051, 2050, 600.00);
+INSERT INTO transfer (transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) VALUES (3004, 2, 3, 2050, 2051, 250.00);
 
 
 
