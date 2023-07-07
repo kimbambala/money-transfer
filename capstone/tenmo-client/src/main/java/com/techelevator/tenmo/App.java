@@ -116,7 +116,6 @@ public class App {
         System.out.println("ID          From/To                  Amount");
         System.out.println("-------------------------------------------");
         int userId = currentUser.getUser().getId();
-        Account currentAccount = accountService.getAccountByUserId(userId);
 
         Transfer[] transfers = transferService.listTransfers(currentUser.getToken());
         for(Transfer transfer : transfers) {
@@ -124,27 +123,58 @@ public class App {
 
             if (transfer.getAccountFrom() == accountOfUser.getAccountId() || transfer.getAccountTo() == accountOfUser.getAccountId()) {
                 System.out.print(transfer.getTransferId() + "         ");
-                if (transfer.getTransferTypeId() == 2) {
+                if (transfer.getAccountFrom() == accountOfUser.getAccountId()) { //where logged in user is the sending account
                     System.out.print("To: ");
                     Account currentReceiver = accountService.getAccountByAccountId(transfer.getAccountTo());
                     int receiverId = currentReceiver.getUserId();
                     System.out.println(userService.getUsernameById(receiverId) + "        $" + transfer.getAmount());
-                }else if (transfer.getAccountFrom() == accountOfUser.getAccountId()) {
+                }else if (transfer.getAccountTo() == accountOfUser.getAccountId()) {
                     System.out.print("From: ");
-                    Account currentSender = accountService.getAccountByAccountId(transfer.getAccountFrom());
+                    Account currentSender = accountService.getAccountByAccountId(transfer.getAccountFrom()); //where the logged in user is the receiving account
                     int senderId = currentSender.getUserId();
                     System.out.println(userService.getUsernameById(senderId) + "        $" + transfer.getAmount());
                 }
-//                Account currentReceiver = accountService.getAccountByAccountId(transfer.getAccountTo());
-//                int receiverId = currentReceiver.getUserId();
-//
-//                System.out.println(userService.getUsernameById(receiverId) + "        $" + transfer.getAmount());
             }
-
-
         }
+        int transferId = consoleService.promptForInt("Enter a transfer Id to see more details: ");
+        viewTransferDetailsByTransferId(transferId);
 		
 	}
+
+    private void viewTransferDetailsByTransferId(int transferId) {
+
+        Transfer transfer = transferService.getTransfer(currentUser.getToken(), transferId);
+        System.out.println("-----------------------------------------");
+        System.out.println("Transfer Details");
+        System.out.println("-----------------------------------------");
+        System.out.println("ID: " + transfer.getTransferId());
+        Account sendingAccount = accountService.getAccountByAccountId(transfer.getAccountFrom());
+        String sendingUserName = userService.getUsernameById(sendingAccount.getUserId());
+        System.out.println("From: " + sendingUserName);
+        Account receivingAccount = accountService.getAccountByAccountId(transfer.getAccountTo());
+        String receivingUserName = userService.getUsernameById(receivingAccount.getUserId());
+        System.out.println("To: " + receivingUserName);
+        if (transfer.getTransferTypeId() == 2) {
+            System.out.println("Type: " + "Send");
+        }
+        if (transfer.getTransferTypeId() == 1) {
+            System.out.println("Type: " + "Request");
+        }
+        switch (transfer.getTransferStatusId()) {
+            case 1:
+                System.out.println("Status: " + "Pending");
+                break;
+            case 2:
+                System.out.println("Status: " + "Approved");
+                break;
+            case 3:
+                System.out.println("Status: " + "Rejected");
+                break;
+
+        }
+        System.out.println("Amount: $" + transfer.getAmount());
+
+    }
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
@@ -196,10 +226,6 @@ public class App {
 
 
 	private void requestBucks() {
-        //TODO delete this crap
-        //        Transfer transfer = new Transfer(5,2,1,2001,2002,BigDecimal.valueOf(300));
-//        Transfer transfer2 = new Transfer(6,1,1,2003,2001,BigDecimal.valueOf(300));
-//        transferService.createTransfer(currentUser.getToken(),transfer);
 
 	}
 
