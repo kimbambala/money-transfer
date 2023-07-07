@@ -17,29 +17,29 @@ public class TransferController {
         this.transferDao = transferDao;
     }
 
-//    @GetMapping
-//    public List<Transfer> listAllTransfers() {
-//        return transferDao.getAllTransfers();
-//    }
-//
-//    @GetMapping("/{id}")
-//    public Transfer getTransferById(@PathVariable int id) {
-//        return transferDao.getTransferById(id);
-//    }
-//
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void createTransfer(@RequestBody Transfer newTransfer) {
-//        transferDao.save(newTransfer);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public void updateTransfer(@PathVariable int id, @RequestBody Transfer updatedTransfer) {
-//        transferDao.update(id, updatedTransfer);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteTransfer(@PathVariable int id) {
-//        transferDao.delete(id);
-//    }
+    @GetMapping
+    public List<Transfer> listAllTransfers() {
+        return transferDao.getAllTransfers();
+    }
+
+    @GetMapping("/{id}")
+    public Transfer getTransferById(@PathVariable int id) {
+        return transferDao.getTransferById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createTransfer(@RequestBody Transfer newTransfer) {
+        transferDao.save(newTransfer);
+    }
+
+    @PutMapping("/{id}")
+    public void updateTransfer(@PathVariable int id, @RequestBody Transfer updatedTransfer) {
+        transferDao.update(id, updatedTransfer);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTransfer(@PathVariable int id) {
+        transferDao.delete(id);
+    }
 }

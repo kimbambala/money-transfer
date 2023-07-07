@@ -111,7 +111,38 @@ public class App {
     }
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+        System.out.println("-------------------------------------------");
+        System.out.println("Transfers");
+        System.out.println("ID          From/To                  Amount");
+        System.out.println("-------------------------------------------");
+        int userId = currentUser.getUser().getId();
+        Account currentAccount = accountService.getAccountByUserId(userId);
+
+        Transfer[] transfers = transferService.listTransfers(currentUser.getToken());
+        for(Transfer transfer : transfers) {
+            Account accountOfUser = accountService.getAccountByUserId(userId);
+
+            if (transfer.getAccountFrom() == accountOfUser.getAccountId() || transfer.getAccountTo() == accountOfUser.getAccountId()) {
+                System.out.print(transfer.getTransferId() + "         ");
+                if (transfer.getTransferTypeId() == 2) {
+                    System.out.print("To: ");
+                    Account currentReceiver = accountService.getAccountByAccountId(transfer.getAccountTo());
+                    int receiverId = currentReceiver.getUserId();
+                    System.out.println(userService.getUsernameById(receiverId) + "        $" + transfer.getAmount());
+                }else if (transfer.getAccountFrom() == accountOfUser.getAccountId()) {
+                    System.out.print("From: ");
+                    Account currentSender = accountService.getAccountByAccountId(transfer.getAccountFrom());
+                    int senderId = currentSender.getUserId();
+                    System.out.println(userService.getUsernameById(senderId) + "        $" + transfer.getAmount());
+                }
+//                Account currentReceiver = accountService.getAccountByAccountId(transfer.getAccountTo());
+//                int receiverId = currentReceiver.getUserId();
+//
+//                System.out.println(userService.getUsernameById(receiverId) + "        $" + transfer.getAmount());
+            }
+
+
+        }
 		
 	}
 
@@ -138,7 +169,7 @@ public class App {
         while (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
             amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
             if (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
-                System.out.println("Invalid ammount of money to send!");
+                System.out.println("Invalid amount of money to send!");
             }
 
         }
@@ -147,18 +178,28 @@ public class App {
         } else {
             sendingAccount.setBalance(sendingAccount.getBalance().subtract(amountToSend)); //subtract send amount from sending account
             receivingAccount.setBalance(receivingAccount.getBalance().add(amountToSend));
+
+            //Update the database account balances
+            accountService.withdraw(sendingAccount.getAccountId(), amountToSend);
+            accountService.deposit(receivingAccount.getAccountId(), amountToSend);
+
+
             System.out.println("Sender balance:" + sendingAccount.getBalance());
             System.out.println("Receiver balance:" + receivingAccount.getBalance());
         }
-
+        Transfer transfer = new Transfer(2, 2, 2, sendingAccount.getAccountId(),
+                receivingAccount.getAccountId(), amountToSend);
+        transferService.createTransfer(currentUser.getToken(), transfer);
 
     }
 
 
 
 	private void requestBucks() {
-//		accountService.deposit(2002, new BigDecimal(55000));
-//        System.out.println("this is a test");
+        //TODO delete this crap
+        //        Transfer transfer = new Transfer(5,2,1,2001,2002,BigDecimal.valueOf(300));
+//        Transfer transfer2 = new Transfer(6,1,1,2003,2001,BigDecimal.valueOf(300));
+//        transferService.createTransfer(currentUser.getToken(),transfer);
 
 	}
 
