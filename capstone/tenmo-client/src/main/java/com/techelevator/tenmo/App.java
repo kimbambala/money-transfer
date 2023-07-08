@@ -191,6 +191,9 @@ public class App {
             if (receiverId == userId) {
                 System.out.println("You cannot send money to yourself!");
             }
+            if (receiverId == 0) {
+                return;
+            }
         }
         Account sendingAccount = accountService.getAccountByUserId(userId);
         Account receivingAccount = accountService.getAccountByUserId(receiverId);
@@ -234,6 +237,9 @@ public class App {
             senderId = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
             if (senderId == userId) {
                 System.out.println("You cannot request money from yourself!");
+            }
+            if (senderId == 0) {
+                return;
             }
         }
         Account sendingAccount = accountService.getAccountByUserId(senderId);
