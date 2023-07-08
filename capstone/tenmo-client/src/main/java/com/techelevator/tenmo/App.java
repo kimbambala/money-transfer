@@ -186,6 +186,7 @@ public class App {
         int userId = currentUser.getUser().getId();
         int receiverId = userId;
         while (receiverId == userId) {
+
             receiverId = consoleService.promptForInt("Enter ID of user you are sending to (0 to cancel): ");
             if (receiverId == userId) {
                 System.out.println("You cannot send money to yourself!");
@@ -226,7 +227,31 @@ public class App {
 
 
 	private void requestBucks() {
+        displayUsers();
+        int userId = currentUser.getUser().getId();
+        int senderId = userId;
+        while (senderId == userId) {
+            senderId = consoleService.promptForInt("Enter ID of user you are requesting from (0 to cancel): ");
+            if (senderId == userId) {
+                System.out.println("You cannot request money from yourself!");
+            }
+        }
+        Account sendingAccount = accountService.getAccountByUserId(senderId);
+        Account receivingAccount = accountService.getAccountByUserId(userId);
+        BigDecimal currentBalance = sendingAccount.getBalance();
+        BigDecimal amountToSend = null;
 
+        while (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
+            amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
+            if (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
+                System.out.println("Invalid amount of money to request!");
+            }
+
+        }
+
+        Transfer transfer = new Transfer(2, 1, 1, sendingAccount.getAccountId(),
+                receivingAccount.getAccountId(), amountToSend);
+        transferService.createTransfer(currentUser.getToken(), transfer);
 	}
 
     private void displayUsers() {
