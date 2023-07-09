@@ -5,6 +5,7 @@ import com.techelevator.tenmo.services.*;
 import com.techelevator.util.Constants;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -54,17 +55,23 @@ public class App {
         UserCredentials credentials = consoleService.promptForCredentials();
         if (authenticationService.register(credentials)) {
             System.out.println("Registration successful. You can now login.");
-        } else {
+        } else if(!authenticationService.register(credentials)){
+            consoleService.printErrorMessage();
+        }else {
             consoleService.printErrorMessage();
         }
     }
 
     private void handleLogin() {
+        System.out.println("Enter your login information");
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
-        accountService.setAuthToken(currentUser.getToken());
-        userService.setAuthToken(currentUser.getToken());
-        if (currentUser == null) {
+        if (currentUser != null) {
+            accountService.setAuthToken(currentUser.getToken());
+            userService.setAuthToken(currentUser.getToken());
+            System.out.println("You are now logged in!");
+
+        }else{
             consoleService.printErrorMessage();
         }
     }
@@ -134,12 +141,39 @@ public class App {
                     int senderId = currentSender.getUserId();
                     System.out.println(userService.getUsernameById(senderId) + "        $" + transfer.getAmount());
                 }
+
+                }
             }
+
+        transferDetails();
+
+
+    }
+
+    private void transferDetails(){
+        Transfer[] transfers = transferService.listTransfers(currentUser.getToken());
+        int transferId = consoleService.promptForInt("Please enter transfer ID to view details (0 to cancel): ");
+
+        for(Transfer transfer : transfers) {
+            int comparedTransferId = transfer.getTransferId();
+
+            if(transferId == comparedTransferId){
+                viewTransferDetailsByTransferId(transferId);
+                break;
+            }
+
+            if (transferId == 0) {
+                return;
+            }
+
         }
-        int transferId = consoleService.promptForInt("Enter a transfer Id to see more details: ");
-        viewTransferDetailsByTransferId(transferId);
-		
-	}
+        Transfer transfer = new Transfer();
+        int comparedTransferId = transfer.getTransferId();
+        if (transferId != comparedTransferId) {
+            System.out.println("Incorrect transfer ID");
+        }
+
+    }
 
     private void viewTransferDetailsByTransferId(int transferId) {
 
