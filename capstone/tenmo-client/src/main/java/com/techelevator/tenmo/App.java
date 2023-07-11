@@ -236,6 +236,10 @@ public class App {
 
         while (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
             amountToSend = consoleService.promptForBigDecimal("Enter amount: ");
+            if (amountToSend.equals(BigDecimal.ZERO)) {
+                System.out.println("Cannot be Zero!");
+                return;
+            }
             if (amountToSend == null || amountToSend.compareTo(BigDecimal.ZERO) < 0) {
                 System.out.println("Invalid amount of money to send!");
             }
